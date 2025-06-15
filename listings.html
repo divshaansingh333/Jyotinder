@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0">
+    <title>Listings - Jyotinder Pal Kaur Boparai</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body { font-family: 'Inter', sans-serif; }
+        .modal-bg {
+            background: rgba(0,0,0,0.5);
+        }
+    </style>
+</head>
+<body class="min-h-screen bg-gray-50 font-sans text-gray-800">
+
+    <!-- Navbar -->
+    <nav class="bg-white shadow-sm p-4 sticky top-0 z-50 rounded-b-lg">
+        <div class="container mx-auto flex justify-between items-center">
+            <a href="index.html#home" class="text-2xl font-bold text-indigo-700">Jyotinder Pal Kaur Boparai</a>
+            <ul class="hidden md:flex space-x-6">
+                <li><a href="index.html#home" class="text-gray-600 hover:text-indigo-700 font-medium transition-colors duration-200">Home</a></li>
+                <li><a href="index.html#about" class="text-gray-600 hover:text-indigo-700 font-medium transition-colors duration-200">About</a></li>
+                <li><a href="listings.html" class="text-indigo-700 font-bold transition-colors duration-200">Listings</a></li>
+                <li><a href="index.html#contact" class="text-gray-600 hover:text-indigo-700 font-medium transition-colors duration-200">Contact</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Listings Section -->
+    <section class="py-16 md:py-24 bg-gray-100 rounded-xl shadow-lg mx-auto my-8 max-w-7xl px-4">
+        <div class="container mx-auto text-center">
+            <h2 class="text-3xl md:text-4xl font-bold text-gray-900 mb-8">All Listings</h2>
+            <div id="listingsGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
+                <!-- Listings will be injected here by JS -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Modal for Details -->
+    <div id="modal" class="fixed inset-0 flex items-center justify-center z-50 hidden">
+        <div class="modal-bg absolute inset-0"></div>
+        <div class="bg-white rounded-xl shadow-2xl max-w-lg w-full p-8 relative z-10">
+            <button id="closeModal" class="absolute top-3 right-3 text-gray-400 hover:text-indigo-700 text-2xl">&times;</button>
+            <img id="modalImg" src="" alt="" class="w-full h-64 object-cover rounded-lg mb-4">
+            <h3 id="modalTitle" class="text-2xl font-bold mb-2"></h3>
+            <p id="modalInfo" class="text-gray-600 mb-2"></p>
+            <p id="modalPrice" class="text-xl font-bold text-indigo-700 mb-4"></p>
+            <p id="modalDesc" class="text-gray-700 mb-4"></p>
+            <a href="index.html#contact" class="bg-indigo-600 text-white px-6 py-2 rounded-lg hover:bg-indigo-700 transition-colors duration-200">Contact About This Listing</a>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-gray-800 text-white py-8 mt-8 rounded-t-lg">
+        <div class="container mx-auto text-center px-4">
+            <p class="mb-4">&copy; <span id="year"></span> Jyotinder Pal Kaur Boparai. All rights reserved.</p>
+            <div class="flex justify-center space-x-6 text-sm">
+                <a href="#privacy" class="hover:underline">Privacy Policy</a>
+                <a href="#terms" class="hover:underline">Terms of Service</a>
+            </div>
+        </div>
+    </footer>
+    <script>
+        document.getElementById('year').textContent = new Date().getFullYear();
+
+        // Listings data with local images for all 12
+        const listings = [
+            {
+                img: "img/home1.png",
+                title: "Charming Family Home",
+                info: "3 Beds | 2 Baths | 1,800 sqft",
+                price: "$750,000",
+                desc: "A beautiful family home with a spacious backyard, modern kitchen, and close to schools and parks."
+            },
+            {
+                img: "img/home2.png",
+                title: "Modern Downtown Condo",
+                info: "2 Beds | 2 Baths | 1,200 sqft",
+                price: "$520,000",
+                desc: "Enjoy city living in this stylish condo with stunning views, gym access, and 24/7 security."
+            },
+            {
+                img: "img/home3.png",
+                title: "Spacious Suburban Estate",
+                info: "5 Beds | 4 Baths | 3,500 sqft",
+                price: "$1,200,000",
+                desc: "A luxurious estate with a pool, home theater, and large garden, perfect for entertaining."
+            },
+            {
+                img: "img/home4.png",
+                title: "Cozy Bungalow",
+                info: "2 Beds | 1 Bath | 900 sqft",
+                price: "$410,000",
+                desc: "A charming bungalow ideal for small families or couples, featuring a renovated kitchen."
+            },
+            {
+                img: "img/home5.png",
+                title: "Luxury Penthouse",
+                info: "3 Beds | 3 Baths | 2,200 sqft",
+                price: "$1,500,000",
+                desc: "Top-floor penthouse with panoramic city views, private elevator, and designer finishes."
+            },
+            {
+                img: "img/home6.png",
+                title: "Townhouse Retreat",
+                info: "4 Beds | 3 Baths | 2,000 sqft",
+                price: "$670,000",
+                desc: "Spacious townhouse in a quiet neighborhood, close to shopping and transit."
+            },
+            {
+                img: "img/home7.png",
+                title: "Country Farmhouse",
+                info: "4 Beds | 2 Baths | 2,800 sqft",
+                price: "$850,000",
+                desc: "Classic farmhouse with acres of land, barn, and updated interiors."
+            },
+            {
+                img: "img/home8.png",
+                title: "Urban Loft",
+                info: "1 Bed | 1 Bath | 950 sqft",
+                price: "$480,000",
+                desc: "Trendy loft in the heart of downtown, exposed brick, and open concept living."
+            },
+            {
+                img: "img/home9.png",
+                title: "Lakeview Cottage",
+                info: "3 Beds | 2 Baths | 1,400 sqft",
+                price: "$690,000",
+                desc: "Cozy cottage with lake views, private dock, and fireplace for year-round comfort."
+            },
+            {
+                img: "img/home10.png",
+                title: "Executive Home",
+                info: "5 Beds | 5 Baths | 4,000 sqft",
+                price: "$1,800,000",
+                desc: "Executive home with smart features, home office, and a three-car garage."
+            },
+            {
+                img: "img/home11.png",
+                title: "Starter Condo",
+                info: "1 Bed | 1 Bath | 700 sqft",
+                price: "$350,000",
+                desc: "Affordable condo perfect for first-time buyers, with amenities and parking."
+            },
+            {
+                img: "img/home12.png",
+                title: "Renovated Duplex",
+                info: "4 Beds | 3 Baths | 2,100 sqft",
+                price: "$780,000",
+                desc: "Recently renovated duplex with rental potential and modern upgrades throughout."
+            }
+        ];
+
+        // Render listings
+        const grid = document.getElementById('listingsGrid');
+        listings.forEach((listing, idx) => {
+            const card = document.createElement('div');
+            card.className = "bg-white rounded-xl shadow-lg overflow-hidden transition-transform duration-300 hover:scale-105 hover:shadow-xl cursor-pointer h-full flex flex-col";
+            card.innerHTML = `
+                <img src="${listing.img}" alt="${listing.title}" class="w-full h-48 object-cover"/>
+                <div class="p-6 flex flex-col h-full justify-between flex-1">
+                    <div>
+                        <h3 class="text-xl font-semibold text-gray-900 mb-2">${listing.title}</h3>
+                        <p class="text-gray-600 mb-2">${listing.info}</p>
+                        <p class="text-2xl font-bold text-indigo-700 mb-4">${listing.price}</p>
+                    </div>
+                    <a href="javascript:void(0)" class="bg-indigo-600 text-white px-6 py-2 rounded-lg hover:bg-indigo-700 transition-colors duration-200 inline-block view-details mt-4" data-idx="${idx}">View Details</a>
+                </div>
+            `;
+            // Clicking anywhere on the card or the button opens modal
+            card.querySelector('.view-details').addEventListener('click', (e) => {
+                e.stopPropagation();
+                openModal(idx);
+            });
+            card.addEventListener('click', () => openModal(idx));
+            grid.appendChild(card);
+        });
+
+        // Modal logic
+        const modal = document.getElementById('modal');
+        const closeModalBtn = document.getElementById('closeModal');
+        function openModal(idx) {
+            const l = listings[idx];
+            document.getElementById('modalImg').src = l.img;
+            document.getElementById('modalTitle').textContent = l.title;
+            document.getElementById('modalInfo').textContent = l.info;
+            document.getElementById('modalPrice').textContent = l.price;
+            document.getElementById('modalDesc').textContent = l.desc;
+            modal.classList.remove('hidden');
+        }
+        function closeModal() {
+            modal.classList.add('hidden');
+        }
+        closeModalBtn.addEventListener('click', closeModal);
+        modal.querySelector('.modal-bg').addEventListener('click', closeModal);
+        document.addEventListener('keydown', (e) => {
+            if (!modal.classList.contains('hidden') && e.key === 'Escape') closeModal();
+        });
+    </script>
+</body>
+</html>
